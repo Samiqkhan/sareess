@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Saree Room - Premium Saree Collection</title>
+      <link rel="icon" href="Images/favicon.png" type="image/png" >
+
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <!-- Marquee Banner -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <span>✨ GRAND OPENING SALE - 50% OFF ON ALL SILK SAREES ✨</span>
+            <span>🎉 FREE SHIPPING WORLDWIDE ON ORDERS ABOVE ₹150 🎉</span>
+            <span>💎 HANDPICKED PREMIUM COLLECTION FROM INDIA 💎</span>
+            <span>🌟 NEW ARRIVALS EVERY WEEK 🌟</span>
+            <span>💝 SPECIAL BRIDAL PACKAGES AVAILABLE 💝</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                
+                <div class="logo">
+                    <h1>THE SAREE ROOM</h1>
+                    <p class="tagline">Elegance Redefined</p>
+                </div>
+                
+                
+                <nav class="nav-menu">
+                    <ul>
+                        <li><a href="#home" class="nav-link">Home</a></li>
+                        <li><a href="#collection" class="nav-link">Collection</a></li>
+                        <li><a href="#about" class="nav-link">About</a></li>
+                        <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+                        <li><a href="#contact" class="nav-link">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    
+                    <button class="action-btn" id="wishlistBtn" title="Wishlist">
+                        <i class="fas fa-heart"></i>
+                        <span class="badge" id="wishlistCount">0</span>
+                    </button>
+                    <button class="action-btn" id="cartBtn" title="Shopping Cart">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="badge" id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background">
+            <div class="hero-slide active">
+                <img src="Images/hero-bg.png" alt="Silk Sarees" class="hero-bg-img">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-slide">
+                <img src="Images/hero-bg2.png" alt="Designer Sarees" class="hero-bg-img">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-slide">
+                <img src="Images/hero-bg3.png" alt="Bridal Collection" class="hero-bg-img">
+                <div class="hero-overlay"></div>
+            </div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span>✨ Premium Collection</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-line">Exquisite</span>
+                    <span class="title-line highlight">Saree</span>
+                    <span class="title-line">Collection</span>
+                </h1>
+                <p class="hero-subtitle">Discover the finest handwoven sarees that blend tradition with contemporary elegance. Each piece tells a story of craftsmanship and cultural heritage.</p>
+                <div class="hero-buttons">
+                    <button class="cta-btn primary" onclick="document.getElementById('collection').scrollIntoView({behavior: 'smooth'})">
+                        <span>Explore Collection</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="cta-btn secondary" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+                        <span>Our Story</span>
+                        <i class="fas fa-play"></i>
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Premium Sarees</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Happy Customers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">25+</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="floating-elements">
+                    <div class="floating-card card-1">
+                        <img src="Images/hero-silk.png" alt="Silk Sarees">
+                        <div class="card-info">
+                            <h4>Silk Collection</h4>
+                            <p>From ₹299</p>
+                        </div>
+                    </div>
+                    <div class="floating-card card-2">
+                        <img src="Images/hero-design.png" alt="Designer Sarees">
+                        <div class="card-info">
+                            <h4>Designer Range</h4>
+                            <p>From ₹599</p>
+                        </div>
+                    </div>
+                    <div class="floating-card card-3">
+                        <img src="Images/hero-bridal.png" alt="Bridal Sarees">
+                        <div class="card-info">
+                            <h4>Bridal Special</h4>
+                            <p>From ₹899</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-decoration">
+                    <div class="decoration-circle circle-1"></div>
+                    <div class="decoration-circle circle-2"></div>
+                    <div class="decoration-circle circle-3"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
+
+    
+    <!-- Featured Products Carousel -->
+    <section class="featured-products">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Featured</div>
+                <h2 class="section-title">Trending Sarees</h2>
+                <p class="section-subtitle">Handpicked by our style experts</p>
+            </div>
+            
+            <div class="products-carousel">
+                <div class="carousel-container" id="featuredCarousel">
+                    <!-- Featured products will be loaded here -->
+                </div>
+                <button class="carousel-btn prev" id="carouselPrev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn next" id="carouselNext">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Categories</div>
+                <h2 class="section-title">Saree Collections</h2>
+                <p class="section-subtitle">Explore our curated collections</p>
+            </div>
+            
+            <div class="category-grid">
+                <div class="category-card large" data-category="silk">
+                    <div class="category-image">
+                        <img src="Images/cate-silk.png" alt="Silk Sarees">
+                        <div class="category-badge">Premium</div>
+                    </div>
+                    <div class="category-content">
+                        <h2>Silk Sarees</h2>
+                        <p>Luxurious & Traditional</p>
+                        <div class="category-stats">
+                            <span>150+ Designs</span>
+                            <span>From ₹299</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="cotton">
+                    <div class="category-image">
+                        <img src="Images/cate-cotton.png" alt="Cotton Sarees">
+                        <div class="category-badge">Comfort</div>
+                    </div>
+                    <div class="category-content">
+                        <h3>Cotton Sarees</h3>
+                        <p>Comfortable & Elegant</p>
+                        <div class="category-stats">
+                            <span>200+ Designs</span>
+                            <span>From ₹149</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="designer">
+                    <div class="category-image">
+                        <img src="Images/cate-designer.png" alt="Designer Sarees">
+                        <div class="category-badge">Trendy</div>
+                    </div>
+                    <div class="category-content">
+                        <h3>Designer Sarees</h3>
+                        <p>Contemporary & Chic</p>
+                        <div class="category-stats">
+                            <span>100+ Designs</span>
+                            <span>From ₹599</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="bridal">
+                    <div class="category-image">
+                        <img src="Images/cate-bridal.png" alt="Bridal Sarees">
+                        <div class="category-badge">Special</div>
+                    </div>
+                    <div class="category-content">
+                        <h3>Bridal Sarees</h3>
+                        <p>Special Occasions</p>
+                        <div class="category-stats">
+                            <span>75+ Designs</span>
+                            <span>From ₹899</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="section-badge">Our Story</div>
+                    <h2 class="section-title">25 Years of Saree Excellence</h2>
+                    <p class="about-description">
+                        Founded in 1999, The Saree Room has been a beacon of traditional Indian craftsmanship and contemporary elegance. We work directly with master weavers across India to bring you authentic, handcrafted sarees that celebrate the rich heritage of Indian textiles.
+                    </p>
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-hand-holding-heart"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Handcrafted Excellence</h4>
+                                <p>Every saree is carefully selected and crafted by skilled artisans</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-globe-asia"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Global Reach</h4>
+                                <p>Serving customers worldwide with authentic Indian sarees</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Quality Assured</h4>
+                                <p>Premium quality guaranteed with every purchase</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <div class="about-image-grid">
+                        <div class="about-image main">
+                            <img src="Images/abt-1.png" alt="Traditional Weaving">
+                        </div>
+                        <div class="about-image small">
+                            <img src="Images/abt-2.png" alt="Artisan at work">
+                        </div>
+                        <div class="about-image small">
+                            <img src="Images/abt-3.png" alt="Saree details">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="collection">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Collection</div>
+                <h2 class="section-title">Our Saree Collection</h2>
+                <p class="section-subtitle">Discover timeless elegance in every thread</p>
+            </div>
+            
+            <div class="products-header">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All Sarees</button>
+                    <button class="filter-btn" data-filter="silk">Silk</button>
+                    <button class="filter-btn" data-filter="cotton">Cotton</button>
+                    <button class="filter-btn" data-filter="designer">Designer</button>
+                    <button class="filter-btn" data-filter="bridal">Bridal</button>
+                </div>
+                <div class="view-options">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+            
+            <div class="load-more-container">
+                <button class="load-more-btn" id="loadMoreBtn">
+                    <span>Load More Sarees</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Reviews</div>
+                <h2 class="section-title">What Our Customers Say</h2>
+                <p class="section-subtitle">Trusted by thousands of saree lovers worldwide</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Absolutely stunning sarees! The quality is exceptional and the designs are breathtaking. I've ordered multiple times and each saree exceeds my expectations."</p>
+                    <div class="testimonial-author">
+                        <img src="Images/rev-1.png" alt="Customer">
+                        <div class="author-info">
+                            <h4>Priya Sharma</h4>
+                            <span>Mumbai, India</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card featured">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"The Saree Room has been my go-to for all special occasions. Their bridal collection is simply divine, and the customer service is outstanding!"</p>
+                    <div class="testimonial-author">
+                        <img src="Images/rev-2.png" alt="Customer">
+                        <div class="author-info">
+                            <h4>Anjali Patel</h4>
+                            <span>Chennai, India</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Fast shipping, beautiful packaging, and the most gorgeous sarees! I'm a customer for life. The silk sarees are particularly amazing."</p>
+                    <div class="testimonial-author">
+                        <img src="Images/rev-3.png" alt="Customer">
+                        <div class="author-info">
+                            <h4>Meera Reddy</h4>
+                            <span>New York, USA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3>FREE SHIPPING ALL OVER INDIA</h3>
+                    <p>On all orders over ₹2500</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-undo"></i>
+                    </div>
+                    <h3>30-DAY RETURNS</h3>
+                    <p>Hassle-free returns & exchanges</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i> 
+                    </div>
+                    <h3>AUTHENTICITY GUARANTEED</h3>
+                    <p>100% authentic handcrafted sarees</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+
+                    </div>
+                    <h3>24/7 CUSTOMER SUPPORT</h3>
+                    <p>We're here to help you</p>
+                    <div class="support-links">
+                        <a href="#" class="feature-link">Chat</a> / 
+                        <a href="#" class="feature-link">Email</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <div class="newsletter-text">
+                    <h2>Stay Updated with Latest Collections</h2>
+                    <p>Subscribe to get special offers, new arrivals, and exclusive saree styling tips delivered to your inbox.</p>
+                </div>
+                <form class="newsletter-form" id="newsletterForm">
+                    <div class="form-group">
+                        <input type="email" placeholder="Enter your email address" required>
+                        <button type="submit">
+                            <span>SUBSCRIBE</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="newsletter-benefits">
+                        <span><i class="fas fa-check"></i> Exclusive offers</span>
+                        <span><i class="fas fa-check"></i> New arrivals first</span>
+                        <span><i class="fas fa-check"></i> Styling tips</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section brand">
+                    <div class="footer-logo">
+                        <h3>THE SAREE ROOM</h3>
+                        <p class="footer-tagline">Elegance Redefined</p>
+                    </div>
+                    <p class="footer-description">
+                        Your trusted destination for authentic, handcrafted sarees. We bring you the finest collection from master weavers across India.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Pinterest"><i class="fab fa-pinterest"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>CUSTOMER SERVICE</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                        <li><a href="#">Care Instructions</a></li>
+                        <li><a href="#">Track Order</a></li>
+                        <li><a href="#">Returns & Exchanges</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>ABOUT US</h3>
+                    <ul>
+                        <li><a href="#">Our Story</a></li>
+                        <li><a href="#">Artisan Partners</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Wholesale</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>CONTACT INFO</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Address</strong>
+                                <p>123 Fashion Street<br>Toronto, ON M5V 3A8<br>Canada</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>Phone</strong>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Email</strong>
+                                <p>info@thesareeroom.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <strong>Hours</strong>
+                                <p>Mon-Fri: 9AM-6PM EST</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 The Saree Room. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#" id="adminLoginLink">Admin</a>
+                    </div>
+                </div>
+                <div class="payment-methods">
+                    <span>We Accept:</span>
+                    <div class="payment-icons">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-google-pay"></i>
+                        </i> Cash on Delivery
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-bag"></i> Shopping Cart</h3>
+            <button class="close-btn" id="closeCart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total: ₹ <span id="cartTotal">0.00</span></span>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn">
+                <i class="fas fa-credit-card"></i>
+                <span>Proceed to Checkout</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div class="wishlist-sidebar" id="wishlistSidebar">
+        <div class="wishlist-header">
+            <h3><i class="fas fa-heart"></i> Wishlist</h3>
+            <button class="close-btn" id="closeWishlist">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="wishlist-items" id="wishlistItems">
+            <!-- Wishlist items will be dynamically added here -->
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content product-modal">
+            <button class="close-btn" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-body" id="modalBody">
+                <!-- Product details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content checkout-modal">
+            <button class="close-btn" id="closeCheckout">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="checkout-content">
+                <h2>Checkout Details</h2>
+                <form id="checkoutForm">
+                    <div class="form-section">
+                        <h3>Contact Information</h3>
+                        <div class="form-row">
+                            <input type="text" placeholder="First Name" required>
+                            <input type="text" placeholder="Last Name" required>
+                        </div>
+                        <input type="email" placeholder="Email Address" required>
+                        <input type="tel" placeholder="Phone Number" required>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Shipping Address</h3>
+                        <input type="text" placeholder="Address Line 1" required>
+                        <input type="text" placeholder="Address Line 2">
+                        <div class="form-row">
+                            <input type="text" placeholder="City" required>
+                            <input type="text" placeholder="State/Province" required>
+                            <input type="text" placeholder="Postal Code" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Payment Method</h3>
+                        <div class="payment-options">
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="gpay" checked>
+                                <div class="payment-card">
+                                    <i class="fab fa-google-pay"></i>
+                                    <span>Google Pay</span>
+                                </div>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="cod">
+                                <div class="payment-card">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>Cash on Delivery</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Special Instructions (Optional)</h3>
+                        <textarea placeholder="Any special requests or notes..." rows="3"></textarea>
+                    </div>
+                    
+                    <div class="order-summary">
+                        <h3>Order Summary</h3>
+                        <div class="summary-items" id="checkoutItems"></div>
+                        <div class="summary-line">
+                            <span>Subtotal:</span>
+                            <span id="checkoutSubtotal">₹0.00</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Shipping:</span>
+                            <span>FREE</span>
+                        </div>
+                        <div class="summary-line total">
+                            <span>Total:</span>
+                            <span id="checkoutTotal">₹0.00</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="place-order-btn">
+                        <i class="fas fa-lock"></i>
+                        <span>Place Order</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content admin-login-modal">
+            <button class="close-btn" id="closeAdminLogin">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="admin-login-content">
+                <div class="admin-login-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <h2>Admin Login</h2>
+                    <p>Enter your credentials to access the admin panel</p>
+                </div>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminUsername">Username</label>
+                        <input type="text" id="adminUsername" placeholder="Enter username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" placeholder="Enter password" required>
+                    </div>
+                    <button type="submit" class="admin-login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- Admin Login Modal -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content admin-login-modal">
+            <button class="close-btn" id="closeAdminLogin">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="admin-login-content">
+                <div class="admin-login-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <h2>Admin Login</h2>
+                    <p>Enter your credentials to access the admin panel</p>
+                </div>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminUsername">Username</label>
+                        <input type="text" id="adminUsername" placeholder="Enter username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" placeholder="Enter password" required>
+                    </div>
+                    <button type="submit" class="admin-login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel" style="display: none;">
+        <div class="admin-header">
+            <div class="admin-title">
+                <i class="fas fa-cog"></i>
+                <h2>Admin Dashboard</h2>
+            </div>
+            <button class="admin-logout" id="adminLogout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+        <div class="admin-content">
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalProducts">0</h3>
+                        <p>Total Products</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalOrders">0</h3>
+                        <p>Total Orders</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-rupee-sign"></i>
+
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalRevenue">₹0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-section">
+                <h3><i class="fas fa-plus-circle"></i> <span id="formTitle">Add New Saree</span></h3>
+                <form id="addProductForm" class="admin-form">
+                    <input type="hidden" id="editProductId" value="">
+                    <div class="form-row">
+                        <input type="text" id="productName" placeholder="Saree Name" required>
+                        <input type="number" id="productPrice" placeholder="Price (₹)" step="0.01" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="image-upload-container">
+                            <input type="url" id="productImageUrl" placeholder="Image URL (optional)">
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="productImageFile" accept="image/*" style="display: none;">
+                                <button type="button" class="file-upload-btn" onclick="document.getElementById('productImageFile').click()">
+                                    <i class="fas fa-upload"></i> Choose Image
+                                </button>
+                                <span id="fileName" class="file-name"></span>
+                            </div>
+                        </div>
+                        <select id="productCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="silk">Silk Saree</option>
+                            <option value="cotton">Cotton Saree</option>
+                            <option value="designer">Designer Saree</option>
+                            <option value="bridal">Bridal Saree</option>
+                        </select>
+                    </div>
+                    <textarea id="productDescription" placeholder="Saree Description" required rows="3"></textarea>
+                    <div class="image-preview" id="imagePreview" style="display: none;">
+                        <img id="previewImg" src="/placeholder.svg" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 10px; margin-top: 10px;">
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="admin-btn" id="submitBtn">
+                            <i class="fas fa-plus"></i>
+                            <span id="submitText">Add Saree</span>
+                        </button>
+                        <button type="button" class="admin-btn cancel-btn" id="cancelBtn" onclick="cancelEdit()" style="display: none; background: #6c757d;">
+                            <i class="fas fa-times"></i>
+                            <span>Cancel</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="admin-section">
+                <h3><i class="fas fa-list"></i> Manage Sarees</h3>
+                <div class="products-list" id="adminProductsList">
+                    <!-- Products will be listed here -->
+                </div>
+            </div>
+            <div class="admin-section">
+                <h3><i class="fas fa-clipboard-list"></i> Customer Orders</h3>
+                <div class="orders-list" id="adminOrdersList">
+                    <!-- Orders will be listed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Float Button -->
+    <div class="whatsapp-float" id="whatsappFloat">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-tooltip"></span>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+
+
+<script type="module" src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
