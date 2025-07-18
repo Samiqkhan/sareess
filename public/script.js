@@ -1,81 +1,24 @@
-// Global Variables
-let products = [
-  {
-    id: 1,
-    name: "Elegant Silk Saree",
-    price: 299.99,
-    image: "/placeholder.svg?height=350&width=300",
-    category: "silk",
-    description:
-      "Beautiful handwoven silk saree with intricate golden embroidery and traditional motifs. Perfect for special occasions and celebrations.",
-    featured: true,
-  },
-  {
-    id: 2,
-    name: "Cotton Handloom Saree",
-    price: 149.99,
-    image: "/placeholder.svg?height=350&width=300",
-    category: "cotton",
-    description: "Comfortable cotton saree perfect for daily wear with elegant border design and breathable fabric.",
-    featured: false,
-  },
-  {
-    id: 3,
-    name: "Designer Party Saree",
-    price: 599.99,
-    image: "/placeholder.svg?height=350&width=300",
-    category: "designer",
-    description:
-      "Stunning designer saree with contemporary patterns and luxurious fabric. Perfect for parties and events.",
-    featured: true,
-  },
-  {
-    id: 4,
-    name: "Bridal Banarasi Saree",
-    price: 899.99,
-    image: "/placeholder.svg?height=350&width=300",
-    category: "bridal",
-    description: "Exquisite Banarasi saree perfect for weddings with heavy zari work and traditional craftsmanship.",
-    featured: true,
-  },
-  {
-    id: 5,
-    name: "Pure Silk Kanjivaram",
-    price: 749.99,
-    image: "/placeholder.svg?height=350&width=300",
-    category: "silk",
-    description: "Traditional Kanjivaram silk saree with authentic temple border and rich colors.",
-    featured: false,
-  },
-  {
-    id: 6,
-    name: "Organic Cotton Saree",
-    price: 199.99,
-    image: "/placeholder.svg?height=350&width=300",
-    category: "cotton",
-    description: "Eco-friendly organic cotton saree with natural dyes and block prints. Sustainable and stylish.",
-    featured: true,
-  },
-  {
-    id: 7,
-    name: "Georgette Designer Saree",
-    price: 449.99,
-    image: "/placeholder.svg?height=350&width=300",
-    category: "designer",
-    description: "Flowing georgette saree with modern prints and comfortable drape. Perfect for office wear.",
-    featured: false,
-  },
-  {
-    id: 8,
-    name: "Wedding Silk Saree",
-    price: 1299.99,
-    image: "/placeholder.svg?height=350&width=300",
-    category: "bridal",
-    description: "Luxurious wedding silk saree with heavy embellishments and traditional craftsmanship.",
-    featured: true,
-  },
-]
+// Firebase configuration and initialization
+import { initializeApp } from "firebase/app"
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore"
 
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBvVfZmY0yPSYj_Q-53AGk90R-I3Epob0M",
+  authDomain: "sareewebsite-8926c.firebaseapp.com",
+  projectId: "sareewebsite-8926c",
+  storageBucket: "sareewebsite-8926c.appspot.com",
+  messagingSenderId: "486878958316",
+  appId: "1:486878958316:web:d7ee126983b25ad1390bc9",
+  measurementId: "G-8JN99R6E44",
+}
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
+
+// Global Variables
+let products = []
 let cart = []
 let wishlist = []
 let orders = []
@@ -124,20 +67,166 @@ const adminLoginLink = document.getElementById("adminLoginLink")
 const backToTop = document.getElementById("backToTop")
 const featuredCarousel = document.getElementById("featuredCarousel")
 const loadMoreBtn = document.getElementById("loadMoreBtn")
-
-// Add WhatsApp float button functionality after DOM elements
 const whatsappFloat = document.getElementById("whatsappFloat")
+
+// Firebase Database Functions
+async function loadProductsFromFirebase() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "products"))
+    products = []
+    querySnapshot.forEach((doc) => {
+      products.push({ id: doc.id, ...doc.data() })
+    })
+
+    // If no products exist, add default products
+    if (products.length === 0) {
+      await addDefaultProducts()
+    }
+
+    loadProducts()
+    loadFeaturedProducts()
+    updateAdminStats()
+  } catch (error) {
+    console.error("Error loading products:", error)
+    showNotification("Error loading products from database", "error")
+  }
+}
+
+async function addDefaultProducts() {
+  const defaultProducts = [
+    {
+      name: "Elegant Silk Saree",
+      price: 299.99,
+      image: "/placeholder.svg?height=350&width=300",
+      category: "silk",
+      description:
+        "Beautiful handwoven silk saree with intricate golden embroidery and traditional motifs. Perfect for special occasions and celebrations.",
+      featured: true,
+    },
+    {
+      name: "Cotton Handloom Saree",
+      price: 149.99,
+      image: "/placeholder.svg?height=350&width=300",
+      category: "cotton",
+      description: "Comfortable cotton saree perfect for daily wear with elegant border design and breathable fabric.",
+      featured: false,
+    },
+    {
+      name: "Designer Party Saree",
+      price: 599.99,
+      image: "/placeholder.svg?height=350&width=300",
+      category: "designer",
+      description:
+        "Stunning designer saree with contemporary patterns and luxurious fabric. Perfect for parties and events.",
+      featured: true,
+    },
+    {
+      name: "Bridal Banarasi Saree",
+      price: 899.99,
+      image: "/placeholder.svg?height=350&width=300",
+      category: "bridal",
+      description: "Exquisite Banarasi saree perfect for weddings with heavy zari work and traditional craftsmanship.",
+      featured: true,
+    },
+    {
+      name: "Pure Silk Kanjivaram",
+      price: 749.99,
+      image: "/placeholder.svg?height=350&width=300",
+      category: "silk",
+      description: "Traditional Kanjivaram silk saree with authentic temple border and rich colors.",
+      featured: false,
+    },
+    {
+      name: "Organic Cotton Saree",
+      price: 199.99,
+      image: "/placeholder.svg?height=350&width=300",
+      category: "cotton",
+      description: "Eco-friendly organic cotton saree with natural dyes and block prints. Sustainable and stylish.",
+      featured: true,
+    },
+  ]
+
+  try {
+    for (const product of defaultProducts) {
+      await addDoc(collection(db, "products"), product)
+    }
+    showNotification("Default products added successfully!", "success")
+  } catch (error) {
+    console.error("Error adding default products:", error)
+  }
+}
+
+async function saveProductToFirebase(productData) {
+  try {
+    const docRef = await addDoc(collection(db, "products"), productData)
+    return docRef.id
+  } catch (error) {
+    console.error("Error adding product:", error)
+    throw error
+  }
+}
+
+async function updateProductInFirebase(productId, productData) {
+  try {
+    const productRef = doc(db, "products", productId)
+    await updateDoc(productRef, productData)
+  } catch (error) {
+    console.error("Error updating product:", error)
+    throw error
+  }
+}
+
+async function deleteProductFromFirebase(productId) {
+  try {
+    await deleteDoc(doc(db, "products", productId))
+  } catch (error) {
+    console.error("Error deleting product:", error)
+    throw error
+  }
+}
+
+async function saveOrderToFirebase(orderData) {
+  try {
+    const docRef = await addDoc(collection(db, "orders"), orderData)
+    return docRef.id
+  } catch (error) {
+    console.error("Error saving order:", error)
+    throw error
+  }
+}
+
+async function loadOrdersFromFirebase() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "orders"))
+    orders = []
+    querySnapshot.forEach((doc) => {
+      orders.push({ id: doc.id, ...doc.data() })
+    })
+    updateAdminStats()
+  } catch (error) {
+    console.error("Error loading orders:", error)
+    showNotification("Error loading orders from database", "error")
+  }
+}
+
+async function deleteOrderFromFirebase(orderId) {
+  try {
+    await deleteDoc(doc(db, "orders", orderId))
+  } catch (error) {
+    console.error("Error deleting order:", error)
+    throw error
+  }
+}
 
 // Initialize the application
 document.addEventListener("DOMContentLoaded", () => {
-  safeExecute(() => {
-    loadFromLocalStorage() // Load data first
-    loadProducts()
-    loadFeaturedProducts()
+  safeExecute(async () => {
+    loadFromLocalStorage() // Load cart and wishlist from localStorage
+    await loadProductsFromFirebase() // Load products from Firebase
+    await loadOrdersFromFirebase() // Load orders from Firebase
     setupEventListeners()
     updateCartCount()
     updateWishlistCount()
-    updateAdminStats() // Ensure admin stats are updated on load
     startHeroSlideshow()
     setupScrollEffects()
     setupWhatsAppFloat()
@@ -163,7 +252,6 @@ function setupEventListeners() {
     btn.addEventListener("click", function () {
       document.querySelectorAll(".view-btn").forEach((b) => b.classList.remove("active"))
       this.classList.add("active")
-      // Add view switching logic here if needed
     })
   })
 
@@ -199,8 +287,6 @@ function setupEventListeners() {
   // Overlay
   overlay.addEventListener("click", closeAllModals)
 
-  
-
   // Category cards
   document.querySelectorAll(".category-card").forEach((card) => {
     card.addEventListener("click", function () {
@@ -216,7 +302,6 @@ function setupEventListeners() {
       }
     })
   })
-
 
   // Load more button
   loadMoreBtn.addEventListener("click", loadMoreProducts)
@@ -348,10 +433,10 @@ function createProductCard(product) {
       <div class="product-image">
           <img src="${product.image}" alt="${product.name}">
           <div class="product-actions">
-              <button class="action-icon" onclick="toggleWishlist(${product.id})" title="Add to Wishlist">
+              <button class="action-icon" onclick="toggleWishlist('${product.id}')" title="Add to Wishlist">
                   <i class="fas fa-heart ${isInWishlist(product.id) ? "text-red-500" : ""}"></i>
               </button>
-              <button class="action-icon" onclick="openProductModal(${product.id})" title="Quick View">
+              <button class="action-icon" onclick="openProductModal('${product.id}')" title="Quick View">
                   <i class="fas fa-eye"></i>
               </button>
           </div>
@@ -359,7 +444,7 @@ function createProductCard(product) {
       <div class="product-info">
           <h3 class="product-name">${product.name}</h3>
           <p class="product-price">$${product.price}</p>
-          <button class="add-to-cart" onclick="addToCart(${product.id})">
+          <button class="add-to-cart" onclick="addToCart('${product.id}')">
               Add to Cart
           </button>
       </div>
@@ -431,10 +516,10 @@ function updateCartDisplay() {
               <div class="item-name">${item.name}</div>
               <div class="item-price">$${item.price}</div>
               <div class="quantity-controls">
-                  <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                  <button class="qty-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
                   <span>${item.quantity}</span>
-                  <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                  <button class="qty-btn" onclick="removeFromCart(${item.id})" style="margin-left: 10px; background: #dc3545; color: white;" title="Remove from cart">
+                  <button class="qty-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+                  <button class="qty-btn" onclick="removeFromCart('${item.id}')" style="margin-left: 10px; background: #dc3545; color: white;" title="Remove from cart">
                       <i class="fas fa-trash"></i>
                   </button>
               </div>
@@ -490,10 +575,10 @@ function updateWishlistDisplay() {
           <div class="item-details">
               <div class="item-name">${item.name}</div>
               <div class="item-price">$${item.price}</div>
-              <button class="add-to-cart" onclick="addToCart(${item.id})" style="margin-top: 10px;">
+              <button class="add-to-cart" onclick="addToCart('${item.id}')" style="margin-top: 10px;">
                   Add to Cart
               </button>
-              <button class="qty-btn" onclick="toggleWishlist(${item.id})" style="margin-top: 10px; background: #dc3545; color: white;">
+              <button class="qty-btn" onclick="toggleWishlist('${item.id}')" style="margin-top: 10px; background: #dc3545; color: white;">
                   Remove
               </button>
           </div>
@@ -537,10 +622,10 @@ function openProductModal(productId) {
               <p style="font-size: 28px; color: #d4af37; font-weight: 600; margin-bottom: 25px;">$${product.price}</p>
               <p style="color: #666; line-height: 1.7; margin-bottom: 35px; font-size: 16px;">${product.description}</p>
               <div style="display: flex; gap: 20px; margin-bottom: 30px;">
-                  <button onclick="addToCart(${product.id}); closeProductModal();" style="flex: 1; background: linear-gradient(135deg, #000 0%, #333 100%); color: white; border: none; padding: 18px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 16px;">
+                  <button onclick="addToCart('${product.id}'); closeProductModal();" style="flex: 1; background: linear-gradient(135deg, #000 0%, #333 100%); color: white; border: none; padding: 18px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 16px;">
                       Add to Cart
                   </button>
-                  <button onclick="toggleWishlist(${product.id}); loadProducts(); loadFeaturedProducts();" style="background: ${isInWishlist(product.id) ? "#dc3545" : "#f5f5f5"}; color: ${isInWishlist(product.id) ? "white" : "#000"}; border: none; padding: 18px; border-radius: 10px; cursor: pointer; width: 60px;">
+                  <button onclick="toggleWishlist('${product.id}'); loadProducts(); loadFeaturedProducts();" style="background: ${isInWishlist(product.id) ? "#dc3545" : "#f5f5f5"}; color: ${isInWishlist(product.id) ? "white" : "#000"}; border: none; padding: 18px; border-radius: 10px; cursor: pointer; width: 60px;">
                       <i class="fas fa-heart"></i>
                   </button>
               </div>
@@ -595,7 +680,7 @@ function closeCheckout() {
   overlay.classList.remove("active")
 }
 
-function handleCheckout(e) {
+async function handleCheckout(e) {
   e.preventDefault()
 
   // Get form data
@@ -619,7 +704,6 @@ function handleCheckout(e) {
 
   // Create order object with payment details
   const order = {
-    id: Date.now(),
     items: [...cart],
     total: total,
     date: new Date().toISOString(),
@@ -629,65 +713,72 @@ function handleCheckout(e) {
       method: paymentMethod === "cod" ? "Cash on Delivery" : "Google Pay",
       status: paymentMethod === "cod" ? "Pending" : "Processing",
       amount: total,
-      transactionId: paymentMethod === "cod" ? null : null, // Will be updated after payment
+      transactionId: paymentMethod === "cod" ? null : null,
     },
   }
 
-  if (paymentMethod === "cod") {
-    // Handle Cash on Delivery
-    orders.push(order)
-    cart = []
-    updateCartCount()
-    updateCartDisplay()
-    closeCheckout()
-    saveToLocalStorage()
-    updateAdminStats()
-    loadAdminOrders() // Ensure admin orders are reloaded
-    showNotification("Order placed successfully! You will pay cash on delivery.", "success")
-    e.target.reset()
-  } else {
-    // Handle Google Pay via Razorpay
-    const options = {
-      ...razorpayConfig,
-      amount: Math.round(total * 100), // Razorpay expects amount in paise
-      order_id: `order_${order.id}`,
-      prefill: {
-        name: `${customerInfo.firstName} ${customerInfo.lastName}`,
-        email: customerInfo.email,
-        contact: customerInfo.phone,
-      },
-      handler: (response) => {
-        // Payment successful
-        order.payment.status = "Completed"
-        order.payment.transactionId = response.razorpay_payment_id
-        order.status = "Payment Completed"
-
-        orders.push(order)
-        cart = []
-        updateCartCount()
-        updateCartDisplay()
-        closeCheckout()
-        saveToLocalStorage()
-        updateAdminStats()
-        loadAdminOrders() // Ensure admin orders are reloaded
-        showNotification("Payment successful! Your order has been placed.", "success")
-        e.target.reset()
-      },
-      modal: {
-        ondismiss: () => {
-          showNotification("Payment cancelled. Please try again.", "error")
+  try {
+    if (paymentMethod === "cod") {
+      // Handle Cash on Delivery
+      const orderId = await saveOrderToFirebase(order)
+      orders.push({ id: orderId, ...order })
+      cart = []
+      updateCartCount()
+      updateCartDisplay()
+      closeCheckout()
+      saveToLocalStorage()
+      updateAdminStats()
+      loadAdminOrders()
+      showNotification("Order placed successfully! You will pay cash on delivery.", "success")
+      e.target.reset()
+    } else {
+      // Handle Google Pay via Razorpay
+      const options = {
+        ...razorpayConfig,
+        amount: Math.round(total * 100),
+        order_id: `order_${Date.now()}`,
+        prefill: {
+          name: `${customerInfo.firstName} ${customerInfo.lastName}`,
+          email: customerInfo.email,
+          contact: customerInfo.phone,
         },
-      },
-    }
+        handler: async (response) => {
+          // Payment successful
+          order.payment.status = "Completed"
+          order.payment.transactionId = response.razorpay_payment_id
+          order.status = "Payment Completed"
 
-    const Razorpay = window.Razorpay // Declare Razorpay variable
-    try {
-      const rzp = new Razorpay(options)
-      rzp.open()
-    } catch (error) {
-      console.error("Razorpay error:", error)
-      showNotification("Payment service unavailable. Please try Cash on Delivery.", "error")
+          const orderId = await saveOrderToFirebase(order)
+          orders.push({ id: orderId, ...order })
+          cart = []
+          updateCartCount()
+          updateCartDisplay()
+          closeCheckout()
+          saveToLocalStorage()
+          updateAdminStats()
+          loadAdminOrders()
+          showNotification("Payment successful! Your order has been placed.", "success")
+          e.target.reset()
+        },
+        modal: {
+          ondismiss: () => {
+            showNotification("Payment cancelled. Please try again.", "error")
+          },
+        },
+      }
+
+      const Razorpay = window.Razorpay
+      try {
+        const rzp = new Razorpay(options)
+        rzp.open()
+      } catch (error) {
+        console.error("Razorpay error:", error)
+        showNotification("Payment service unavailable. Please try Cash on Delivery.", "error")
+      }
     }
+  } catch (error) {
+    console.error("Error processing order:", error)
+    showNotification("Error processing order. Please try again.", "error")
   }
 }
 
@@ -717,7 +808,6 @@ function handleAdminLogin(e) {
     showNotification("Invalid credentials. Please try again.", "error")
   }
 
-  // Reset form
   e.target.reset()
 }
 
@@ -755,19 +845,17 @@ function setupImageUpload() {
     fileInput.addEventListener("change", (e) => {
       const file = e.target.files[0]
       if (file) {
-        // Validate file type
         if (!file.type.startsWith("image/")) {
           showNotification("Please select a valid image file.", "error")
-          fileInput.value = "" // Clear input
+          fileInput.value = ""
           fileName.textContent = ""
           imagePreview.style.display = "none"
           return
         }
 
-        // Validate file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
           showNotification("Image size should be less than 5MB.", "error")
-          fileInput.value = "" // Clear input
+          fileInput.value = ""
           fileName.textContent = ""
           imagePreview.style.display = "none"
           return
@@ -775,12 +863,11 @@ function setupImageUpload() {
 
         fileName.textContent = file.name
 
-        // Read and preview the file
         const reader = new FileReader()
         reader.onload = (e) => {
           previewImg.src = e.target.result
           imagePreview.style.display = "block"
-          urlInput.value = "" // Clear URL input when file is selected
+          urlInput.value = ""
         }
         reader.readAsDataURL(file)
       } else {
@@ -798,7 +885,7 @@ function setupImageUpload() {
       if (url) {
         previewImg.src = url
         imagePreview.style.display = "block"
-        fileInput.value = "" // Clear file input when URL is entered
+        fileInput.value = ""
         fileName.textContent = ""
       } else {
         if (!fileInput.files[0]) {
@@ -817,7 +904,6 @@ function editProduct(productId) {
     return
   }
 
-  // Populate form with product data
   document.getElementById("editProductId").value = product.id
   document.getElementById("productName").value = product.name
   document.getElementById("productPrice").value = product.price
@@ -825,39 +911,33 @@ function editProduct(productId) {
   document.getElementById("productCategory").value = product.category
   document.getElementById("productDescription").value = product.description
 
-  // Show image preview
   const imagePreview = document.getElementById("imagePreview")
   const previewImg = document.getElementById("previewImg")
   previewImg.src = product.image
   imagePreview.style.display = "block"
-  document.getElementById("fileName").textContent = "" // Clear file name as it's from URL/existing
+  document.getElementById("fileName").textContent = ""
 
-  // Update form UI
   document.getElementById("formTitle").textContent = "Edit Saree"
   document.getElementById("submitText").textContent = "Update Saree"
   document.getElementById("submitBtn").innerHTML = '<i class="fas fa-save"></i><span>Update Saree</span>'
   document.getElementById("cancelBtn").style.display = "inline-flex"
 
-  // Scroll to form
   document.getElementById("addProductForm").scrollIntoView({ behavior: "smooth" })
 }
 
 function cancelEdit() {
-  // Reset form
   document.getElementById("addProductForm").reset()
   document.getElementById("editProductId").value = ""
   document.getElementById("fileName").textContent = ""
   document.getElementById("imagePreview").style.display = "none"
-  document.getElementById("productImageFile").value = "" // Clear file input
+  document.getElementById("productImageFile").value = ""
 
-  // Reset form UI
   document.getElementById("formTitle").textContent = "Add New Saree"
   document.getElementById("submitText").textContent = "Add Saree"
   document.getElementById("submitBtn").innerHTML = '<i class="fas fa-plus"></i><span>Add Saree</span>'
   document.getElementById("cancelBtn").style.display = "none"
 }
 
-// Validate Product Form
 function validateProductForm() {
   const name = document.getElementById("productName").value.trim()
   const price = document.getElementById("productPrice").value
@@ -894,8 +974,7 @@ function validateProductForm() {
   return true
 }
 
-// Update the handleAddProduct function to handle both add and edit
-function handleAddProduct(e) {
+async function handleAddProduct(e) {
   e.preventDefault()
 
   if (!validateProductForm()) {
@@ -908,63 +987,61 @@ function handleAddProduct(e) {
 
   let imageUrl = urlInput.value || "/placeholder.svg?height=350&width=300"
 
-  // If file is selected, use the file data
   if (fileInput.files[0]) {
     const reader = new FileReader()
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       imageUrl = e.target.result
-      saveProduct(editId, imageUrl)
+      await saveProduct(editId, imageUrl)
     }
     reader.onerror = () => {
       showNotification("Error reading image file. Please try again.", "error")
     }
     reader.readAsDataURL(fileInput.files[0])
   } else {
-    saveProduct(editId, imageUrl)
+    await saveProduct(editId, imageUrl)
   }
 }
 
-function saveProduct(editId, imageUrl) {
+async function saveProduct(editId, imageUrl) {
   const productData = {
     name: document.getElementById("productName").value,
     price: Number.parseFloat(document.getElementById("productPrice").value),
     image: imageUrl,
     category: document.getElementById("productCategory").value,
     description: document.getElementById("productDescription").value,
+    featured: false,
   }
 
-  if (editId) {
-    // Update existing product
-    const productIndex = products.findIndex((p) => p.id == editId)
-    if (productIndex !== -1) {
-      products[productIndex] = { ...products[productIndex], ...productData }
+  try {
+    if (editId) {
+      // Update existing product
+      await updateProductInFirebase(editId, productData)
+      const productIndex = products.findIndex((p) => p.id === editId)
+      if (productIndex !== -1) {
+        products[productIndex] = { ...products[productIndex], ...productData }
+      }
       showNotification("Saree updated successfully!", "success")
     } else {
-      showNotification("Error: Product to edit not found.", "error")
+      // Add new product
+      const newProductId = await saveProductToFirebase(productData)
+      products.push({ id: newProductId, ...productData })
+      showNotification("Saree added successfully!", "success")
     }
-  } else {
-    // Add new product
-    const newProduct = {
-      id: Date.now(),
-      ...productData,
-      featured: false,
-    }
-    products.push(newProduct)
-    showNotification("Saree added successfully!", "success")
+
+    // Refresh displays
+    loadProducts()
+    loadFeaturedProducts()
+    loadAdminProducts()
+    updateAdminStats()
+
+    // Reset form
+    cancelEdit()
+  } catch (error) {
+    console.error("Error saving product:", error)
+    showNotification("Error saving product. Please try again.", "error")
   }
-
-  // Refresh displays
-  loadProducts()
-  loadFeaturedProducts()
-  loadAdminProducts()
-  saveToLocalStorage()
-  updateAdminStats()
-
-  // Reset form
-  cancelEdit()
 }
 
-// Update loadAdminProducts to include edit buttons
 function loadAdminProducts() {
   const adminProductsList = document.getElementById("adminProductsList")
   adminProductsList.innerHTML = ""
@@ -985,51 +1062,60 @@ function loadAdminProducts() {
             ${product.featured ? '<span style="color: #28a745; font-weight: 600; margin-left: 10px;">Featured</span>' : ""}
         </div>
         <div>
-            <button class="edit-btn" onclick="editProduct(${product.id})">Edit</button>
-            <button onclick="toggleFeatured(${product.id})" style="background: ${product.featured ? "#28a745" : "#6c757d"}; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-right: 5px;">
+            <button class="edit-btn" onclick="editProduct('${product.id}')">Edit</button>
+            <button onclick="toggleFeatured('${product.id}')" style="background: ${product.featured ? "#28a745" : "#6c757d"}; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-right: 5px;">
                 ${product.featured ? "Unfeature" : "Feature"}
             </button>
-            <button class="delete-btn" onclick="deleteProduct(${product.id})">Delete</button>
+            <button class="delete-btn" onclick="deleteProduct('${product.id}')">Delete</button>
         </div>
     `
     adminProductsList.appendChild(productItem)
   })
 }
 
-function deleteProduct(productId) {
+async function deleteProduct(productId) {
   if (confirm("Are you sure you want to delete this product?")) {
-    // Remove product from products array
-    products = products.filter((p) => p.id !== productId)
-    
-    // Remove product from cart if present
-    cart = cart.filter((item) => item.id !== productId)
-    
-    // Remove product from wishlist if present
-    wishlist = wishlist.filter((item) => item.id !== productId)
-    
-    // Update displays
-    loadProducts()
-    loadFeaturedProducts()
-    loadAdminProducts()
-    updateCartCount()
-    updateCartDisplay()
-    updateWishlistCount()
-    updateWishlistDisplay()
-    saveToLocalStorage()
-    updateAdminStats()
-    
-    showNotification("Product deleted successfully!", "success")
+    try {
+      await deleteProductFromFirebase(productId)
+
+      // Remove product from local arrays
+      products = products.filter((p) => p.id !== productId)
+      cart = cart.filter((item) => item.id !== productId)
+      wishlist = wishlist.filter((item) => item.id !== productId)
+
+      // Update displays
+      loadProducts()
+      loadFeaturedProducts()
+      loadAdminProducts()
+      updateCartCount()
+      updateCartDisplay()
+      updateWishlistCount()
+      updateWishlistDisplay()
+      saveToLocalStorage()
+      updateAdminStats()
+
+      showNotification("Product deleted successfully!", "success")
+    } catch (error) {
+      console.error("Error deleting product:", error)
+      showNotification("Error deleting product. Please try again.", "error")
+    }
   }
 }
 
-function toggleFeatured(productId) {
+async function toggleFeatured(productId) {
   const product = products.find((p) => p.id === productId)
   if (product) {
-    product.featured = !product.featured
-    loadFeaturedProducts()
-    loadAdminProducts()
-    saveToLocalStorage()
-    showNotification(`Product ${product.featured ? "featured" : "unfeatured"} successfully!`, "success")
+    try {
+      product.featured = !product.featured
+      await updateProductInFirebase(productId, { featured: product.featured })
+
+      loadFeaturedProducts()
+      loadAdminProducts()
+      showNotification(`Product ${product.featured ? "featured" : "unfeatured"} successfully!`, "success")
+    } catch (error) {
+      console.error("Error updating product:", error)
+      showNotification("Error updating product. Please try again.", "error")
+    }
   }
 }
 
@@ -1055,23 +1141,28 @@ function loadAdminOrders() {
             ${order.payment.transactionId ? `<br><small style="color: #28a745;">Transaction ID: ${order.payment.transactionId}</small>` : ""}
         </div>
         <div>
-            <button onclick="viewOrderDetails(${order.id})" style="background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-right: 5px;">
+            <button onclick="viewOrderDetails('${order.id}')" style="background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-right: 5px;">
                 View Details
             </button>
-            <button class="delete-btn" onclick="deleteOrder(${order.id})">Delete</button>
+            <button class="delete-btn" onclick="deleteOrder('${order.id}')">Delete</button>
         </div>
     `
     adminOrdersList.appendChild(orderItem)
   })
 }
 
-function deleteOrder(orderId) {
+async function deleteOrder(orderId) {
   if (confirm("Are you sure you want to delete this order?")) {
-    orders = orders.filter((o) => o.id !== orderId)
-    loadAdminOrders()
-    saveToLocalStorage()
-    updateAdminStats()
-    showNotification("Order deleted successfully!", "success")
+    try {
+      await deleteOrderFromFirebase(orderId)
+      orders = orders.filter((o) => o.id !== orderId)
+      loadAdminOrders()
+      updateAdminStats()
+      showNotification("Order deleted successfully!", "success")
+    } catch (error) {
+      console.error("Error deleting order:", error)
+      showNotification("Error deleting order. Please try again.", "error")
+    }
   }
 }
 
@@ -1124,39 +1215,6 @@ function handleNewsletter(e) {
   e.target.reset()
 }
 
-// Search Function
-function handleSearch() {
-  const searchTerm = prompt("Search for sarees:")
-  if (searchTerm) {
-    const filteredProducts = products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
-
-    productsGrid.innerHTML = ""
-
-    if (filteredProducts.length === 0) {
-      productsGrid.innerHTML =
-        '<p style="text-align: center; grid-column: 1/-1; font-size: 18px; color: #666;">No sarees found matching your search.</p>'
-    } else {
-      filteredProducts.forEach((product, index) => {
-        const productCard = createProductCard(product)
-        productCard.style.animationDelay = `${index * 0.1}s`
-        productsGrid.appendChild(productCard)
-      })
-    }
-
-    // Reset filter
-    document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"))
-    document.querySelector('[data-filter="all"]').classList.add("active")
-    currentFilter = "all"
-    displayedProducts = filteredProducts.length
-    loadMoreBtn.style.display = "none"
-  }
-}
-
 // Utility Functions
 function closeAllModals() {
   cartSidebar.classList.remove("open")
@@ -1185,31 +1243,25 @@ function showNotification(message, type = "success") {
 
   document.body.appendChild(notification)
 
-  // Animate in
   setTimeout(() => {
     notification.style.transform = "translateX(0)"
   }, 100)
 
-  // Animate out and remove
   setTimeout(() => {
     notification.style.transform = "translateX(100%)"
     setTimeout(() => notification.remove(), 300)
   }, 3000)
 }
 
-// Local Storage Functions
+// Local Storage Functions (for cart and wishlist only)
 function saveToLocalStorage() {
   localStorage.setItem("sareeRoomCart", JSON.stringify(cart))
   localStorage.setItem("sareeRoomWishlist", JSON.stringify(wishlist))
-  localStorage.setItem("sareeRoomProducts", JSON.stringify(products))
-  localStorage.setItem("sareeRoomOrders", JSON.stringify(orders))
 }
 
 function loadFromLocalStorage() {
   const savedCart = localStorage.getItem("sareeRoomCart")
   const savedWishlist = localStorage.getItem("sareeRoomWishlist")
-  const savedProducts = localStorage.getItem("sareeRoomProducts")
-  const savedOrders = localStorage.getItem("sareeRoomOrders")
 
   if (savedCart) {
     cart = JSON.parse(savedCart)
@@ -1217,15 +1269,6 @@ function loadFromLocalStorage() {
 
   if (savedWishlist) {
     wishlist = JSON.parse(savedWishlist)
-  }
-
-  if (savedProducts) {
-    // Always load products from local storage if available
-    products = JSON.parse(savedProducts)
-  }
-
-  if (savedOrders) {
-    orders = JSON.parse(savedOrders)
   }
 }
 
@@ -1245,13 +1288,11 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 
 // Keyboard Shortcuts
 document.addEventListener("keydown", (e) => {
-  // ESC key to close modals
   if (e.key === "Escape") {
     closeAllModals()
     closeAdminPanel()
   }
 
-  // Ctrl+Shift+A to open admin login
   if (e.ctrlKey && e.shiftKey && e.key === "A") {
     e.preventDefault()
     openAdminLogin()
@@ -1263,45 +1304,10 @@ window.addEventListener("beforeunload", () => {
   saveToLocalStorage()
 })
 
-// Initialize tooltips and additional interactions
-document.addEventListener("DOMContentLoaded", () => {
-  // Add hover effects to buttons
-  document.querySelectorAll("button").forEach((button) => {
-    button.addEventListener("mouseenter", function () {
-      if (!this.style.transform.includes("translateY")) {
-        this.style.transform = "translateY(-2px)"
-      }
-    })
-
-    button.addEventListener("mouseleave", function () {
-      if (this.style.transform.includes("translateY(-2px)")) {
-        this.style.transform = "translateY(0)"
-      }
-    })
-  })
-
-  // Add loading states to forms
-  document.querySelectorAll("form").forEach((form) => {
-    form.addEventListener("submit", function () {
-      const submitBtn = this.querySelector('button[type="submit"]')
-      if (submitBtn && !submitBtn.disabled) {
-        const originalHTML = submitBtn.innerHTML
-        submitBtn.innerHTML = '<span class="loading"></span> Processing...'
-        submitBtn.disabled = true
-
-        setTimeout(() => {
-          submitBtn.innerHTML = originalHTML
-          submitBtn.disabled = false
-        }, 2000)
-      }
-    })
-  })
-})
-
 // Setup WhatsApp float button
 function setupWhatsAppFloat() {
   whatsappFloat.addEventListener("click", () => {
-    const phoneNumber = "1234567890" // Replace with your WhatsApp business number
+    const phoneNumber = "1234567890"
     const message = encodeURIComponent("Hi! I'm interested in your saree collection. Can you help me?")
     const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`
     window.open(whatsappURL, "_blank")
@@ -1318,29 +1324,18 @@ function safeExecute(func, errorMessage = "An error occurred") {
     return null
   }
 }
-// firebase-config.js
 
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
-
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBvVfZmY0yPSYj_Q-53AGk90R-I3Epob0M",
-  authDomain: "sareewebsite-8926c.firebaseapp.com",
-  projectId: "sareewebsite-8926c",
-  storageBucket: "sareewebsite-8926c.appspot.com", // Fixed ".app" typo
-  messagingSenderId: "486878958316",
-  appId: "1:486878958316:web:d7ee126983b25ad1390bc9",
-  measurementId: "G-8JN99R6E44"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-// Initialize Firestore
-const db = getFirestore(app);
-
-// ✅ Export db to use in other files
-export { db };
+// Make functions globally available
+window.addToCart = addToCart
+window.removeFromCart = removeFromCart
+window.updateQuantity = updateQuantity
+window.toggleWishlist = toggleWishlist
+window.openProductModal = openProductModal
+window.closeProductModal = closeProductModal
+window.editProduct = editProduct
+window.cancelEdit = cancelEdit
+window.deleteProduct = deleteProduct
+window.toggleFeatured = toggleFeatured
+window.deleteOrder = deleteOrder
+window.viewOrderDetails = viewOrderDetails
+  
