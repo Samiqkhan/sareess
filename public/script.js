@@ -199,6 +199,8 @@ function setupEventListeners() {
   // Overlay
   overlay.addEventListener("click", closeAllModals)
 
+  
+
   // Category cards
   document.querySelectorAll(".category-card").forEach((card) => {
     card.addEventListener("click", function () {
@@ -1316,3 +1318,29 @@ function safeExecute(func, errorMessage = "An error occurred") {
     return null
   }
 }
+// firebase-config.js
+
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBvVfZmY0yPSYj_Q-53AGk90R-I3Epob0M",
+  authDomain: "sareewebsite-8926c.firebaseapp.com",
+  projectId: "sareewebsite-8926c",
+  storageBucket: "sareewebsite-8926c.appspot.com", // Fixed ".app" typo
+  messagingSenderId: "486878958316",
+  appId: "1:486878958316:web:d7ee126983b25ad1390bc9",
+  measurementId: "G-8JN99R6E44"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+// Initialize Firestore
+const db = getFirestore(app);
+
+// ✅ Export db to use in other files
+export { db };
